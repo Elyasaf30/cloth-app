@@ -10,9 +10,11 @@
   overflow: hidden;
 
   &:hover {
+    cursor: pointer;
+
     & .background-image {
       transform: scale(1.1);
-      transition: transform 5s cubic-bezier(0.25, 0.45, 0.45, 0.95);
+      transition: transform 6s cubic-bezier(0.25, 0.45, 0.45, 0.95);
     }
 
     & .content {
@@ -50,9 +52,6 @@
     background-color: white;
     opacity: 0.7;
     position: absolute;
-    &:hover {
-      cursor: pointer;
-    }
 
     .title {
       font-weight: bold;
@@ -64,15 +63,6 @@
     .subtitle {
       font-weight: lighter;
       font-size: 16px;
-    }
-  }
-}
-
-@media (min-width: 1900px) {
-  .menu-item {
-    height: 380px;
-    &.large {
-      height: 500px;
     }
   }
 }
