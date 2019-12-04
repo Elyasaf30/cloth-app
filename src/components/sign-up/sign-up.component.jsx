@@ -3,16 +3,14 @@ import React from "react";
 import FormInput from "../form-input/form-input.component";
 import CustomButton from "../custom-button/custom-button.component";
 
-import {
-  auth,
-  createUserProfileDoucument
-} from "../../firebase/firebase.utils";
+import { auth, createUserProfileDocument } from "../../firebase/firebase.utils";
 
 import "./sign-up.styles.scss";
 
 class SignUp extends React.Component {
   constructor() {
     super();
+
     this.state = {
       displayName: "",
       email: "",
@@ -23,18 +21,21 @@ class SignUp extends React.Component {
 
   handleSubmit = async event => {
     event.preventDefault();
+
     const { displayName, email, password, confirmPassword } = this.state;
-    if (password != confirmPassword) {
-      alert("password don't match");
+
+    if (password !== confirmPassword) {
+      alert("passwords don't match");
       return;
     }
+
     try {
       const { user } = await auth.createUserWithEmailAndPassword(
         email,
         password
       );
 
-      createUserProfileDoucument(user, { displayName });
+      await createUserProfileDocument(user, { displayName });
 
       this.setState({
         displayName: "",
@@ -49,6 +50,7 @@ class SignUp extends React.Component {
 
   handleChange = event => {
     const { name, value } = event.target;
+
     this.setState({ [name]: value });
   };
 
@@ -56,40 +58,40 @@ class SignUp extends React.Component {
     const { displayName, email, password, confirmPassword } = this.state;
     return (
       <div className="sign-up">
-        <h2 className="title">I do not havw an account</h2>
-        <span>Sign Up with your email and password</span>
+        <h2 className="title">I do not have a account</h2>
+        <span>Sign up with your email and password</span>
         <form className="sign-up-form" onSubmit={this.handleSubmit}>
           <FormInput
             type="text"
             name="displayName"
             value={displayName}
-            onChange={this.handleSubmit}
+            onChange={this.handleChange}
             label="Display Name"
-            requierd
+            required
           />
           <FormInput
             type="email"
             name="email"
             value={email}
-            onChange={this.handleSubmit}
-            label="email"
-            requierd
+            onChange={this.handleChange}
+            label="Email"
+            required
           />
           <FormInput
             type="password"
             name="password"
             value={password}
-            onChange={this.handleSubmit}
-            label="password"
-            requierd
+            onChange={this.handleChange}
+            label="Password"
+            required
           />
           <FormInput
             type="password"
             name="confirmPassword"
             value={confirmPassword}
-            onChange={this.handleSubmit}
-            label="confirmPassword"
-            requierd
+            onChange={this.handleChange}
+            label="Confirm Password"
+            required
           />
           <CustomButton type="submit">SIGN UP</CustomButton>
         </form>
