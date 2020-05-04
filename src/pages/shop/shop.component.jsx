@@ -7,7 +7,10 @@ import CollectionsOverview from "../../components/collection-overview/collection
 import CollectionPage from "../collection/collection.component";
 
 import { fetchCollectionsStartAsync } from "../../redux/shop/shop.actions";
-import { selectIsCollectionFetching } from "../../redux/shop/shop.selector";
+import {
+  selectIsCollectionFetching,
+  selectIsCollectionLoaded,
+} from "../../redux/shop/shop.selector";
 
 import WithSpinner from "../../components/with-spiner/with-spiner.component";
 
@@ -18,14 +21,15 @@ class ShopPage extends React.Component {
     const { fetchCollectionsStartAsync } = this.props;
     fetchCollectionsStartAsync();
   }
+
   render() {
-    const { match, isCollectionFetching } = this.props;
+    const { match, isCollectionFetching, isCollectionLoaded } = this.props;
     return (
       <div className="shop-page">
         <Route
           exact
           path={`${match.path}`}
-          render={props => (
+          render={(props) => (
             <CollectionOverViewWithSpinner
               isLoading={isCollectionFetching}
               {...props}
@@ -34,9 +38,9 @@ class ShopPage extends React.Component {
         />
         <Route
           path={`${match.path}/:collectionId`}
-          render={props => (
+          render={(props) => (
             <CollectionPageWithSpinner
-              isLoading={isCollectionFetching}
+              isLoading={!isCollectionLoaded}
               {...props}
             />
           )}
@@ -47,11 +51,12 @@ class ShopPage extends React.Component {
 }
 
 const mapStateToProps = createStructuredSelector({
-  isCollectionFetching: selectIsCollectionFetching
+  isCollectionFetching: selectIsCollectionFetching,
+  isCollectionLoaded: selectIsCollectionLoaded,
 });
 
-const mapDispatchToProps = dispatch => ({
-  fetchCollectionsStartAsync: () => dispatch(fetchCollectionsStartAsync())
+const mapDispatchToProps = (dispatch) => ({
+  fetchCollectionsStartAsync: () => dispatch(fetchCollectionsStartAsync()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ShopPage);
