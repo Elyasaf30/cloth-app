@@ -10,13 +10,30 @@ export const emailSignInStart = emailAndPassword => ({
     payload: emailAndPassword
 })
 
-export const SignInSuccsess = user => ({
+export const signInSuccsess = user => ({
     type: UserActionsTypes.SIGN_IN_SUCCESS,
     payload: user
 })
 
-export const SignInFailuare = error => ({
+export const signInFailuare = error => ({
     type: UserActionsTypes.SIGN_IN_FAILURE,
+    payload: error
+})
+
+export const checkUserSession = () => ({
+    type: UserActionsTypes.CHECK_USER_SESSION
+})
+
+export const signOutStart = () => ({
+    type: UserActionsTypes.SIGN_OUT_START
+})
+
+export const signOutSucsses = () => ({
+    type: UserActionsTypes.SIGN_OUT_SUCSSES
+})
+
+export const signOutFailure = error => ({
+    type: UserActionsTypes.SIGN_OUT_FAILURE,
     payload: error
 })
 
