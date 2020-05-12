@@ -3,12 +3,19 @@ import { takeLatest, put, all, call } from 'redux-saga/effects';
 import userActionTypes from './user.types';
 
 import { auth, googleProvider, createUserProfileDocument, getCurrentUser } from '../../firebase/firebase.utils';
-import { signInSuccsess, signInFailuare, signOutFailure, signOutSucsses } from './user.action';
+import {
+    signInSuccsess,
+    signInFailuare,
+    signOutFailure,
+    signOutSucsses,
+    signUpSucsses,
+    signUpFailuare,
+} from './user.action';
 
 
-export function* getSnapShotFromUserAuth(userAuth) {
+export function* getSnapShotFromUserAuth(userAuth, additinoalData) {
     try {
-        const userRef = yield call(createUserProfileDocument, userAuth);
+        const userRef = yield call(createUserProfileDocument, userAuth, additinoalData);
         const userSnapShot = yield userRef.get();
         yield put(
             signInSuccsess({ id: userSnapShot.id, ...userSnapShot.data() })
@@ -57,6 +64,20 @@ export function* signOut() {
     }
 }
 
+export function* signUp({ payload: { email, password, displayName } }) {
+    try {
+        const { user } = yield auth.createUserWithEmailAndPassword(email, password);
+        yield put(signUpSucsses({ user, additinoalData: { displayName } }))
+    } catch (error) {
+        yield put(signUpFailuare(error))
+    }
+
+}
+
+export function* signInAfterSignUp({ payload: { user, additinoalData } }) {
+    yield getSnapShotFromUserAuth(user, additinoalData)
+}
+
 export function* onGoogleSignInStart() {
     yield takeLatest(userActionTypes.GOOGLE_SIGN_IN_START, signInWithGoogle)
 }
@@ -72,11 +93,23 @@ export function* onCheckUserSession() {
 export function* onSignOutStart() {
     yield takeLatest(userActionTypes.SIGN_OUT_START, signOut)
 }
+
+export function* onSignUpStart() {
+    yield takeLatest(userActionTypes.SIGN_UP_START, signUp)
+}
+
+export function* onSignUpSucsses() {
+    yield takeLatest(userActionTypes.SIGN_UP_SUCSSES, signInAfterSignUp)
+}
+
+
 export function* userSagas() {
     yield all([
         call(onGoogleSignInStart),
         call(onEmailSignInStart),
         call(onCheckUserSession),
         call(onSignOutStart),
+        call(onSignUpStart),
+        call(onSignUpSucsses),
     ]);
 }

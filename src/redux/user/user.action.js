@@ -10,6 +10,7 @@ export const emailSignInStart = emailAndPassword => ({
     payload: emailAndPassword
 })
 
+
 export const signInSuccsess = user => ({
     type: UserActionsTypes.SIGN_IN_SUCCESS,
     payload: user
@@ -37,3 +38,20 @@ export const signOutFailure = error => ({
     payload: error
 })
 
+export const signUpStart = userCredential => ({
+    type: UserActionsTypes.SIGN_UP_START,
+    payload: userCredential
+})
+
+export const signUpSucsses = ({ user, additinoalData }) => ({
+    type: UserActionsTypes.SIGN_UP_SUCSSES,
+    payload: {
+        user,
+        additinoalData
+    }
+})
+
+export const signUpFailuare = error => ({
+    type: UserActionsTypes.SIGN_UP_FAILURE,
+    payload: error
+})
