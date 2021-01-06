@@ -7,7 +7,7 @@
     "node": "11.11.0"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "firebase": "^7.14.3",
     "node-sass": "^4.14.1",
     "react": "^16.13.1",
